@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyScript : MonoBehaviour {
 
     private Animator animator;
-
+    
 	void Start () {
         animator = GetComponent<Animator>();
 
@@ -14,10 +15,7 @@ public class EnemyScript : MonoBehaviour {
 	
 	void FixedUpdate ()
     {
-
-
-
-
+      
 
 
 

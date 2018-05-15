@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class PlayerScript : MonoBehaviour {
     public float speed;
@@ -53,6 +54,10 @@ public class PlayerScript : MonoBehaviour {
         {
             Movement(0, 0);
         }
+        if(lives==0)
+        {
+            SceneManager.LoadScene(2);
+        }
     }
 
      private void Movement (float moveHorizontal, float moveVertical)
@@ -80,6 +85,7 @@ public class PlayerScript : MonoBehaviour {
 
     private void Orientation (float horizontal, float vertical)
     {
+        
         if (!respawning)
         {
 
@@ -115,12 +121,16 @@ public class PlayerScript : MonoBehaviour {
     }
     private IEnumerator Respawn()
     {
-        yield return new WaitForSeconds(3f);
-        transform.localPosition = new Vector3(0, 0, 0);
-        transform.localScale = new Vector3(1, 1, 1);
-        transform.localRotation = Quaternion.Euler(0, 0, 0);
-        respawning = false;
+        if (lives != 1)
+        {
+            yield return new WaitForSeconds(3f);
+            transform.localPosition = new Vector3(0, 0, 0);
+            transform.localScale = new Vector3(1, 1, 1);
+            transform.localRotation = Quaternion.Euler(0, 0, 0);
+            respawning = false;
+        }
         lives--;
     }
+
 
 }
