@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/GameOver.unity
     guid: 5c03645b1c6d02c48a73761b1f8d1864
+  - enabled: 1
+    path: Assets/LevelWon.unity
+    guid: 1269bf831d0935f498ca713aa69076d3
   m_configObjects: {}

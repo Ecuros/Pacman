@@ -12,9 +12,12 @@ public class PlayerScript : MonoBehaviour {
     public TextMeshProUGUI Score;
     public TextMeshProUGUI Lives;
 
+    public EnemyScript redScript;
+    public EnemyPink pinkScript;
+    public EnemyBlue blueScript;
+    
+
     private GameObject other;
-    private bool FaceRight;
-    private bool FaceUp;
     private int score;
     private int lives=3;
     private IEnumerator coroutine;
@@ -22,15 +25,12 @@ public class PlayerScript : MonoBehaviour {
 
 
 
-
     void Start ()
     {
-        FaceRight = true;
-        FaceUp = false;
+        
         other = GameObject.Find("Food");
         respawning = false;
         
-
         
 	}
 	
@@ -47,12 +47,23 @@ public class PlayerScript : MonoBehaviour {
 
         if (!respawning)
         {
-            Movement(moveHorizontal, moveVertical);
-            Orientation(moveHorizontal, moveVertical);
+            
+            
+            Movement();
+            Orientation();
+            redScript.enabled = true;
+            pinkScript.enabled = true;
+            blueScript.enabled = true;
+            
+           
         }
         else
         {
-            Movement(0, 0);
+            playerRigidbody.velocity = new Vector2(0, 0);
+        }
+        if(score ==71)
+        {
+            SceneManager.LoadScene(3);
         }
         if(lives==0)
         {
@@ -60,10 +71,33 @@ public class PlayerScript : MonoBehaviour {
         }
     }
 
-     private void Movement (float moveHorizontal, float moveVertical)
+     private void Movement ()
     {
-           playerRigidbody.velocity = new Vector2(moveHorizontal * speed, moveVertical * speed);
+           
+        if(Input.GetKeyDown(KeyCode.W))
+        {
+            playerRigidbody.velocity = new Vector2(0, 0);
+            playerRigidbody.velocity = new Vector2(0, 1 * speed);
+        }
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            playerRigidbody.velocity = new Vector2(0, 0);
+            playerRigidbody.velocity = new Vector2(1 * speed, 0);
+        }
+        else if (Input.GetKeyDown(KeyCode.A))
+        {
+            playerRigidbody.velocity = new Vector2(0, 0);
+            playerRigidbody.velocity = new Vector2(-1*speed, 0);
+
+        }
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            playerRigidbody.velocity = new Vector2(0, 0);
+            playerRigidbody.velocity = new Vector2(0 , -1 * speed);
+        }
         
+
+
     }
 
 
@@ -79,41 +113,44 @@ public class PlayerScript : MonoBehaviour {
         {
             
             StartCoroutine(Respawn());
+            redScript.enabled = false;
+            pinkScript.enabled = false;
+            blueScript.enabled = false;
             respawning = true;
         }
     }
 
-    private void Orientation (float horizontal, float vertical)
+    private void Orientation ()
     {
         
         if (!respawning)
         {
 
-            if (horizontal > 0)
+            if (Input.GetKeyDown(KeyCode.D))
             {
 
-                transform.localScale = new Vector3(1, 1, 1);
+                transform.localScale = new Vector3(0.85f, 0.85f, 0.85f);
                 transform.localRotation = Quaternion.Euler(0, 0, 0);
 
 
 
             }
-            else if (horizontal < 0)
+            else if (Input.GetKeyDown(KeyCode.A))
             {
 
-                transform.localScale = new Vector3(-1, 1, 1);
+                transform.localScale = new Vector3(-0.85f, 0.85f, 0.85f);
                 transform.localRotation = Quaternion.Euler(0, 0, 0);
 
             }
-            else if (vertical > 0)
+            else if (Input.GetKeyDown(KeyCode.W))
             {
-                transform.localScale = new Vector3(1, 1, 1);
+                transform.localScale = new Vector3(0.85f, 0.85f, 0.85f);
                 transform.localRotation = Quaternion.Euler(0, 0, 90);
             }
-            else if (vertical < 0)
+            else if (Input.GetKeyDown(KeyCode.S))
 
             {
-                transform.localScale = new Vector3(1, 1, 1);
+                transform.localScale = new Vector3(0.85f, 0.85f, 0.85f);
                 transform.localRotation = Quaternion.Euler(0, 0, 270);
             }
         }
@@ -125,8 +162,12 @@ public class PlayerScript : MonoBehaviour {
         {
             yield return new WaitForSeconds(3f);
             transform.localPosition = new Vector3(0, 0, 0);
-            transform.localScale = new Vector3(1, 1, 1);
+            transform.localScale = new Vector3(0.85f, 0.85f, 0.85f);
             transform.localRotation = Quaternion.Euler(0, 0, 0);
+            redScript.transform.position = new Vector3(3.19f, -5.0f, 0.0f);
+            pinkScript.transform.position = new Vector3(-5.0f, 2.0f, 0.0f);
+            blueScript.transform.position = new Vector3(1.0f,1.0f, 0.0f);
+            blueScript.spotNumber = 0;
             respawning = false;
         }
         lives--;
